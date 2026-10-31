@@ -20,7 +20,7 @@ public abstract class Tokenizer
     public string Pattern { get; protected set; } = "";
     public IReadOnlyList<MergeRule> Merges => Rules.AsReadOnly();
     public IReadOnlyDictionary<string, int> SpecialTokens => new ReadOnlyDictionary<string, int>(Specials.ToDictionary());
-    public int VocabularySize => Vocab.Count;
+    public int VocabularySize => 256 + Rules.Count;
     private protected Tokenizer() { }
     public abstract void Train(string text, int vocabularySize, bool verbose = false);
     public abstract int[] Encode(string text);
@@ -134,9 +134,12 @@ public abstract class Tokenizer
     {
         ArgumentException.ThrowIfNullOrEmpty(modelFile);
         if (!modelFile.EndsWith(".model", StringComparison.Ordinal)) throw new ArgumentException("Expected a .model file.", nameof(modelFile));
+        var raw = File.ReadAllBytes(modelFile);
+        if (raw.AsSpan().StartsWith(new byte[] { 0xef, 0xbb, 0xbf })) throw new FormatException("Model files must not contain a UTF-8 BOM.");
         var lines = File.ReadAllLines(modelFile, StrictUtf8);
         if (lines.Length < 3 || TrimPythonWhitespace(lines[0]) != "minbpe v1") throw new FormatException("Unsupported model header.");
-        string pattern = TrimPythonWhitespace(lines[1]);
+        string pattern = lines[1];
+        if (pattern != TrimPythonWhitespace(pattern)) throw new FormatException("Model pattern has ambiguous leading or trailing whitespace.");
         ValidatePattern(pattern);
         if (!int.TryParse(TrimPythonWhitespace(lines[2]), NumberStyles.Integer, CultureInfo.InvariantCulture, out int specialCount) || specialCount < 0 || specialCount > lines.Length - 3)
             throw new FormatException("Invalid special-token count.");
@@ -153,7 +156,7 @@ public abstract class Tokenizer
         for (int i = 3 + specialCount; i < lines.Length; i++)
         {
             var parts = lines[i].Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length != 2 || !int.TryParse(parts[0], out int left) || !int.TryParse(parts[1], out int right) || !vocab.ContainsKey(left) || !vocab.ContainsKey(right) || ranks.ContainsKey((left, right)))
+            if (parts.Length != 2 || !int.TryParse(parts[0], NumberStyles.Integer, CultureInfo.InvariantCulture, out int left) || !int.TryParse(parts[1], NumberStyles.Integer, CultureInfo.InvariantCulture, out int right) || !vocab.ContainsKey(left) || !vocab.ContainsKey(right) || ranks.ContainsKey((left, right)))
                 throw new FormatException("Invalid or out-of-order merge entry.");
             int rank = 256 + rules.Count;
             ranks[(left, right)] = rank; rules.Add(new(left, right, rank)); vocab[rank] = [..vocab[left], ..vocab[right]];

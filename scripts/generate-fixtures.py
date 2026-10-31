@@ -178,6 +178,11 @@ def main():
             result["splitCases"].append(dict(pattern=pattern, text=text,
                 chunks=regex.findall(GPT4_SPLIT_PATTERN if pattern is None else pattern, text)))
 
+    for pattern in (None, GPT2_SPLIT_PATTERN):
+        text = "X'ſy I'LL"
+        result["splitCases"].append(dict(pattern=pattern, text=text,
+            chunks=regex.findall(GPT4_SPLIT_PATTERN if pattern is None else pattern, text)))
+
     print("Recovering GPT4 merge forest...", flush=True)
     gpt = GPT4Tokenizer()
     enc = tiktoken.get_encoding("cl100k_base")

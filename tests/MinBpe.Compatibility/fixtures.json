@@ -52675,6 +52675,29 @@
         " ",
         "I'M"
       ]
+    },
+    {
+      "pattern": null,
+      "text": "X'ſy I'LL",
+      "chunks": [
+        "X",
+        "'ſ",
+        "y",
+        " I",
+        "'LL"
+      ]
+    },
+    {
+      "pattern": "'(?:[sdmt]|ll|ve|re)| ?\\p{L}+| ?\\p{N}+| ?[^\\s\\p{L}\\p{N}]+|\\s+(?!\\S)|\\s+",
+      "text": "X'ſy I'LL",
+      "chunks": [
+        "X",
+        "'",
+        "ſy",
+        " I",
+        "'",
+        "LL"
+      ]
     }
   ],
   "trainErrorCases": [

@@ -12,6 +12,7 @@ public static class TextSplitter
     public const string Gpt4Pattern = @"'(?i:[sdmt]|ll|ve|re)|[^\r\n\p{L}\p{N}]?+\p{L}+|\p{N}{1,3}| ?[^\s\p{L}\p{N}]++[\r\n]*|\s*[\r\n]|\s+(?!\S)|\s+";
     internal static void Validate(string pattern)
     {
+        if (pattern.Length == 0) throw new ArgumentException("A regex tokenizer requires a nonempty pattern.", nameof(pattern));
         if (pattern == Gpt2Pattern || pattern == Gpt4Pattern) return;
         var regex = new Regex(pattern, RegexOptions.CultureInvariant, TimeSpan.FromSeconds(2));
         if (regex.GetGroupNumbers().Length != 1) throw new ArgumentException("Custom patterns with capturing groups are unsupported; use non-capturing groups.");
@@ -25,7 +26,12 @@ public static class TextSplitter
         if (pattern != Gpt2Pattern && pattern != Gpt4Pattern)
         {
             Validate(pattern);
-            return Regex.Matches(text, pattern, RegexOptions.CultureInvariant, TimeSpan.FromSeconds(2)).Select(m => m.Value).ToArray();
+            var matches = Regex.Matches(text, pattern, RegexOptions.CultureInvariant, TimeSpan.FromSeconds(2));
+            bool SplitsPair(int offset) => offset > 0 && offset < text.Length && char.IsHighSurrogate(text[offset - 1]) && char.IsLowSurrogate(text[offset]);
+            foreach (Match match in matches)
+                if (SplitsPair(match.Index) || SplitsPair(match.Index + match.Length))
+                    throw new ArgumentException("Custom regex split a UTF-16 surrogate pair. Use a scalar-safe pattern or a built-in GPT pattern.", nameof(pattern));
+            return matches.Select(m => m.Value).ToArray();
         }
         bool gpt4 = pattern == Gpt4Pattern;
         var runes = text.EnumerateRunes().ToArray();
