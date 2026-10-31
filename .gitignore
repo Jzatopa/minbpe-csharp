@@ -4,3 +4,8 @@ models/**/*
 *.pytest_cache
 *.model
 *.vocab
+# Added for the managed C# port
+**/bin/
+**/obj/
+.venv/
+artifacts/

@@ -1,0 +1,40 @@
+{
+  "sourceCommit": "1acefe89412b20245db5a22d2a02001e547dc602",
+  "sourceHashes": {
+    "minbpe/__init__.py": "d01f1961bdef63cec9c0435053c303756a7d329a59ca465f84f65383d9174119",
+    "minbpe/base.py": "b5329a834e114459dce29a6889e05b0d5d15ead8738bf66f65396139822863b4",
+    "minbpe/basic.py": "d240f8b54f25d8c65e81f3da1cc7c3a390a7692cdbf62d6ff6d0c1cba1b031b8",
+    "minbpe/gpt4.py": "9ecaa1c43e0d61af12b229aac48f121b0aed1bc5fe8d4b4d555f6ddc4f35f91b",
+    "minbpe/regex.py": "2f79fc32d719c5805782c441e6311c10790ba9873ee1ec7e920a2d04d3a77e38"
+  },
+  "versions": {
+    "regex": "2026.9.29",
+    "tiktoken": "0.12.0",
+    "pytest": "8.4.2",
+    "python": "3.12.3"
+  },
+  "format": "MINBPE01; int32-le merge count; 256-byte shuffle; int32-le (left,right,rank) triples",
+  "gpt4VocabSha256": "6822eb90aa2a94e0204aa5b1e0977386321ca85b78b49496606460e4ae6c8d91",
+  "mergeCount": 100000,
+  "compressedSha256": "19a8a2e317e03472c3c1b858bd254e38a4edd983930a57c8fbf4b8d3ab028747",
+  "uncompressedSha256": "d7edc00510af005c3f9f27f19d9d4968c639aeeaac0f1545f77854bcd6f58415",
+  "cl100kRankSha256": "223921b76ee99bde995b7ff738513eef100fb51d18c93597a113bcffe865b2a7",
+  "rankHashSerialization": "tiktoken base64-token space decimal-rank newline, insertion order",
+  "dataset": "cl100k_base",
+  "datasetSource": "https://openaipublic.blob.core.windows.net/encodings/cl100k_base.tiktoken",
+  "unicodeClassesSha256": "0700063dce73b8131e7d2cb216d9b14fff6777efe9ed790b4cd5c54c84679848",
+  "unicodeClassesSource": {
+    "regexVersion": "2026.9.29",
+    "unicodedataVersion": "15.0.0",
+    "license": "Unicode-3.0",
+    "licenseUrl": "https://www.unicode.org/license.txt",
+    "generatorLicenseFile": "REGEX-LICENSE.txt",
+    "unicodeLicenseFile": "UNICODE-LICENSE.txt"
+  },
+  "attribution": {
+    "project": "tiktoken",
+    "copyright": "Copyright (c) 2022 OpenAI, Shantanu Jain",
+    "license": "MIT",
+    "licenseUrl": "https://github.com/openai/tiktoken/blob/main/LICENSE"
+  }
+}

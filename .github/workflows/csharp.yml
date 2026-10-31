@@ -1,0 +1,31 @@
+name: CSharp compatibility
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.3'
+      - run: pip install -r scripts/requirements-oracle.txt
+      - run: python scripts/generate-fixtures.py
+      - run: git diff --exit-code -- tests/MinBpe.Compatibility/fixtures.json src/MinBpe/Resources
+      - run: python -m pytest -q tests/test_tokenizer.py
+      - run: dotnet run --project tests/MinBpe.Compatibility -c Release
+      - run: dotnet run --project samples/TokenizerDemo -c Release
+      - run: dotnet run --project samples/TokenizerDemo -c Release -- --gpt4 "hello 世界 😀"
+      - run: dotnet pack src/MinBpe -c Release -o artifacts
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MinBpe-CSharp-package
+          path: artifacts/*.nupkg

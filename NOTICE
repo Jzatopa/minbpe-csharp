@@ -1,0 +1,12 @@
+MinBpe.CSharp is an independent C# port of Andrej Karpathy's minbpe.
+Upstream: https://github.com/karpathy/minbpe
+Pinned source: 1acefe89412b20245db5a22d2a02001e547dc602
+Original MIT license and Python source are retained. See LICENSE.
+C# translation, tests, data export and documentation added by Jzatopa, 2026.
+This fork is maintained through agentic AI under Jzatopa's direction.
+
+The embedded cl100k_base merge data is exported from tiktoken's public encoding,
+using pinned tiktoken and minbpe versions. See the packaged provenance JSON.
+Tiktoken-derived material and data: Copyright (c) 2022 OpenAI, Shantanu Jain.
+Its MIT license is retained in src/MinBpe/Resources/TIKTOKEN-LICENSE.txt and
+packaged in licenses/TIKTOKEN-LICENSE.txt. No affiliation or endorsement is claimed.

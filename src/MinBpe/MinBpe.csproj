@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable><TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <PackageId>MinBpe.CSharp</PackageId><Version>0.1.0</Version><Authors>Jzatopa; upstream: Andrej Karpathy</Authors>
+    <Description>Managed C# minbpe port: byte-pair tokenizer training, regex splitting, model persistence and offline cl100k_base.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression><PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/Jzatopa/minbpe-csharp</RepositoryUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources/cl100k_base.bin.gz" />
+    <EmbeddedResource Include="Resources/unicode-classes.json" />
+    <None Include="../../README.md" Pack="true" PackagePath="/" />
+    <None Include="../../LICENSE" Pack="true" PackagePath="/" />
+    <None Include="../../NOTICE" Pack="true" PackagePath="/" />
+    <None Include="Resources/*LICENSE*.txt" Pack="true" PackagePath="/licenses/" />
+    <None Include="Resources/cl100k_base.provenance.json" Pack="true" PackagePath="/provenance/" />
+  </ItemGroup>
+</Project>
